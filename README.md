@@ -1,6 +1,6 @@
 # Gestión Integral de Seguros - Aplicación Móvil
 
-![Logo de la Aplicación](ruta/a/tu/imagen.png)
+![Logo de la Aplicación](https://cdn.vectorstock.com/i/1000v/78/13/safe-hands-logo-vector-40457813.avif)
 
 ### Descripción
 Esta aplicación móvil está diseñada para gestionar de manera eficiente seguros **automovilísticos, personales y empresariales** en una sola plataforma. Nuestro objetivo es ofrecer una experiencia simple y fluida tanto para los usuarios como para los proveedores de seguros, facilitando el acceso a información clave y optimizando la comunicación.
