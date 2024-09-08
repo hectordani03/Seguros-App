@@ -13,9 +13,9 @@ Esta aplicación móvil está diseñada para gestionar de manera eficiente segur
 - **Apartado educativo**: Accede a contenido educativo sobre seguros para tomar decisiones informadas y mejorar tu conocimiento sobre el tema.
 
 ### Tecnologías
-- **Android Studio**: Desarrollo de la aplicación móvil nativa.
-- **Kotlin**: Lenguaje de programación principal.
-- **Firebase**: Autenticación, base de datos en tiempo real y notificaciones push.
+- [**Android Studio**](https://developer.android.com/studio): Desarrollo de la aplicación móvil nativa.
+- [**Kotlin**](https://kotlinlang.org/): Lenguaje de programación principal.
+- [**Firebase**](https://firebase.google.com/): Autenticación, base de datos en tiempo real y notificaciones push.
 
 ### Objetivo
 La aplicación está enfocada en centralizar la gestión de diferentes tipos de seguros, facilitar la comunicación con los aseguradores mediante un chat directo, y proporcionar información educativa a los usuarios para que tomen mejores decisiones sobre sus seguros.
