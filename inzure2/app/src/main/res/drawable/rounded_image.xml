@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#0C4377" /> <!-- El color azul que quieras para el fondo -->
+    <corners android:radius="8dp" /> <!-- Ajusta el radio como desees -->
+</shape>
