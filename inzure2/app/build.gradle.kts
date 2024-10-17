@@ -68,8 +68,11 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+
     // Agrega esta línea para los íconos de Visibility y VisibilityOff
     implementation("androidx.compose.material:material-icons-extended:1.5.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.x.x")
+    implementation("androidx.compose.material:material-icons-extended:1.x.x")
 }
 
 dependencies {
