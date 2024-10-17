@@ -25,10 +25,9 @@ import androidx.compose.ui.geometry.CornerRadius
 
 @Preview(showBackground = true)
 @Composable
-fun MainScreen() {
-    // Estructura principal con la barra superior y contenido desplazable
+fun MainScreen(onNavigateToLogin: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
-        TopBar()
+        TopBar(onNavigateToLogin)
 
         // Contenido scrolleable debajo del TopBar
         Column(
@@ -49,7 +48,7 @@ fun MainScreen() {
 }
 
 @Composable
-fun TopBar() {
+fun TopBar(onNavigateToLogin: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -69,7 +68,7 @@ fun TopBar() {
             contentDescription = "Logo",
             modifier = Modifier.size(80.dp)
         )
-        IconButton(onClick = { /* TODO: Handle profile click */ }) {
+        IconButton(onClick = onNavigateToLogin) {
             Image(
                 painter = painterResource(id = R.drawable.ic_profile),
                 contentDescription = "Profile",
@@ -188,11 +187,11 @@ fun LearnAboutInsurance() {
             modifier = Modifier.padding(bottom = 12.dp)
         )
         InsuranceImage()
-        Spacer(modifier = Modifier.height(40.dp)) // Espaciador aumentado
+        Spacer(modifier = Modifier.height(20.dp)) // Espaciador aumentado
         InsuranceImage2()
-        Spacer(modifier = Modifier.height(32.dp)) // Espaciador aumentado
+        Spacer(modifier = Modifier.height(10.dp)) // Espaciador aumentado
         InsuranceImage3()
-        Spacer(modifier = Modifier.height(32.dp)) // Espaciador aumentado
+        Spacer(modifier = Modifier.height(10.dp)) // Espaciador aumentado
         InsuranceImage4()
     }
 }

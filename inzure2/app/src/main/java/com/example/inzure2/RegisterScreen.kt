@@ -1,5 +1,6 @@
 package com.example.inzure2
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -13,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -21,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -29,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.inzure2.ui.theme.Inzure2Theme
+import java.util.*
 
 class RegisterScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,12 +42,10 @@ class RegisterScreen : ComponentActivity() {
             Inzure2Theme {
                 Scaffold { paddingValues ->
                     registerScreen(paddingValues, onBackClick = {
-                        // Navegar de vuelta a MainActivity
                         val intent = Intent(this@RegisterScreen, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     }, onLoginClick = {
-                        // Navegar a LoginScreen
                         val intent = Intent(this@RegisterScreen, LoginScreen::class.java)
                         startActivity(intent)
                         finish()
@@ -58,17 +60,28 @@ class RegisterScreen : ComponentActivity() {
 @Composable
 fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLoginClick: () -> Unit) {
     var email by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var last_name by remember { mutableStateOf("") }
+    var phone by remember { mutableStateOf("") }
+    var company_name by remember { mutableStateOf("") }
+    var fiscal_id by remember { mutableStateOf("") }
+    var direction by remember { mutableStateOf("") }
+    var license_number by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    var isInsurer by remember { mutableStateOf(false) }
+    var insurerCode by remember { mutableStateOf("") }
+    var selectedDate by remember { mutableStateOf("") }
 
     val scrollState = rememberScrollState()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(paddingValues)
             .padding(16.dp)
-            .verticalScroll(scrollState),  // Agregar scroll
+            .verticalScroll(scrollState),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -99,6 +112,48 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
         Spacer(modifier = Modifier.height(10.dp))
 
         TextField(
+            value = name,
+            onValueChange = { name = it },
+            label = { Text("Nombre") },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_name),
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            )
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
+            value = last_name,
+            onValueChange = { last_name = it },
+            label = { Text("Apellidos") },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_name),
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            )
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        TextField(
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
@@ -120,12 +175,12 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
         Spacer(modifier = Modifier.height(16.dp))
 
         TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Nombre Completo") },
+            value = phone,
+            onValueChange = { phone = it },
+            label = { Text("Celular") },
             leadingIcon = {
                 Icon(
-                    painter = painterResource(R.drawable.ic_name),
+                    painter = painterResource(R.drawable.ic_phone),
                     contentDescription = null,
                     modifier = Modifier.size(15.dp)
                 )
@@ -140,22 +195,43 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // DatePicker
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            context,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+            }, year, month, day
+        )
+
         TextField(
-            value = email,
-            onValueChange = { email = it },
-            label = { Text("Celular") },
+            value = selectedDate,
+            onValueChange = { },
+            label = { Text("Fecha de nacimiento", color = Color.DarkGray) },
             leadingIcon = {
                 Icon(
-                    painter = painterResource(R.drawable.ic_phone),
+                    imageVector = Icons.Default.CalendarToday,
                     contentDescription = null,
-                    modifier = Modifier.size(15.dp)
+                    modifier = Modifier.size(15.dp),
+                    tint = Color.DarkGray
                 )
             },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { datePickerDialog.show() },
+            enabled = false,
             shape = RoundedCornerShape(8.dp),
             colors = TextFieldDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledTextColor = Color.DarkGray,
+                disabledLabelColor = Color.DarkGray,
+                disabledLeadingIconColor = Color.DarkGray,
+                disabledPlaceholderColor = Color.DarkGray
             )
         )
 
@@ -196,6 +272,120 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Mostrar campos adicionales si el switch está activado
+        if (isInsurer) {
+            TextField(
+                value = company_name,
+                onValueChange = { company_name = it },
+                label = { Text("Nombre de la compañia asegurdadora") },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.register_image),
+                        contentDescription = null,
+                        modifier = Modifier.size(15.dp)
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextField(
+                value = fiscal_id,
+                onValueChange = { fiscal_id = it },
+                label = { Text("Numero de identificacion fiscal") },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.register_image),
+                        contentDescription = null,
+                        modifier = Modifier.size(15.dp)
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextField(
+                value = direction,
+                onValueChange = { direction = it },
+                label = { Text("Direccion de la sede principal") },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.register_image),
+                        contentDescription = null,
+                        modifier = Modifier.size(15.dp)
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TextField(
+                value = license_number,
+                onValueChange = { license_number = it },
+                label = { Text("Numero de licencia") },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(R.drawable.register_image),
+                        contentDescription = null,
+                        modifier = Modifier.size(15.dp)
+                    )
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp),
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        Text(
+            text = "¿Eres un asegurador?",
+            fontWeight = FontWeight.Bold,
+            fontSize = 15.sp,
+            modifier = Modifier
+                .padding(top = 16.dp, bottom = 12.dp)
+                .align(Alignment.Start)
+        )
+
+        Switch(
+            checked = isInsurer,
+            onCheckedChange = { isInsurer = it },
+            modifier = Modifier.align(Alignment.Start)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Button(
+            onClick = { /* TODO: Lógica de registro */ },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            Text(text = "Continuar", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
         Row(
             modifier = Modifier.align(Alignment.CenterHorizontally)
         ) {
@@ -211,15 +401,6 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
                 modifier = Modifier.clickable { /* TODO: Navegar a terminos y condiciones */ }
             )
         }
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Button(
-            onClick = { /* TODO: Lógica de inicio de sesión */ },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp)
-        ) {
-            Text(text = "Continuar", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -232,10 +413,10 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
                 text = "Inicia Sesion",
                 color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.clickable { onLoginClick() }  // Navegar a LoginScreen
+                modifier = Modifier.clickable { onLoginClick() }
             )
         }
-
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

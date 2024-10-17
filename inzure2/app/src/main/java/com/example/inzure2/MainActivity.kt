@@ -1,5 +1,6 @@
 package com.example.inzure2
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,7 +20,12 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    MainScreen(
+                        onNavigateToLogin = {
+                            val intent = Intent(this@MainActivity, LoginScreen::class.java)
+                            startActivity(intent)
+                        }
+                    )
                 }
             }
         }
