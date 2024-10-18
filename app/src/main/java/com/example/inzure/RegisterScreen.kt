@@ -12,9 +12,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
@@ -26,8 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.input.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,9 +71,10 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
     var direction by remember { mutableStateOf("") }
     var license_number by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    var confirmPasswordVisible by remember { mutableStateOf(false) }
     var isInsurer by remember { mutableStateOf(false) }
-    var insurerCode by remember { mutableStateOf("") }
     var selectedDate by remember { mutableStateOf("") }
 
     val scrollState = rememberScrollState()
@@ -111,6 +115,7 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
 
         Spacer(modifier = Modifier.height(10.dp))
 
+        // Campo de nombre
         TextField(
             value = name,
             onValueChange = { name = it },
@@ -132,6 +137,7 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Campo de apellidos
         TextField(
             value = last_name,
             onValueChange = { last_name = it },
@@ -153,13 +159,14 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Campo de email
         TextField(
             value = email,
             onValueChange = { email = it },
             label = { Text("Email") },
             leadingIcon = {
                 Icon(
-                    painter = painterResource(R.drawable.email_icon),
+                    imageVector = Icons.Default.Email,
                     contentDescription = null,
                     modifier = Modifier.size(15.dp)
                 )
@@ -174,17 +181,19 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Campo de teléfono (solo números)
         TextField(
             value = phone,
-            onValueChange = { phone = it },
+            onValueChange = { phone = it.filter { char -> char.isDigit() } },
             label = { Text("Celular") },
             leadingIcon = {
                 Icon(
-                    painter = painterResource(R.drawable.ic_phone),
+                    imageVector = Icons.Default.Phone,
                     contentDescription = null,
                     modifier = Modifier.size(15.dp)
                 )
             },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             colors = TextFieldDefaults.textFieldColors(
@@ -237,31 +246,54 @@ fun registerScreen(paddingValues: PaddingValues, onBackClick: () -> Unit, onLogi
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Campo de contraseña
         TextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Contraseña") },
             leadingIcon = {
                 Icon(
-                    painter = painterResource(R.drawable.lock_2),
+                    imageVector = Icons.Default.Lock,
                     contentDescription = null,
                     modifier = Modifier.size(15.dp)
                 )
             },
             trailingIcon = {
-                val image = if (passwordVisible)
-                    Icons.Filled.Visibility
-                else Icons.Filled.VisibilityOff
-
+                val icon = if (passwordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
                 IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                    Icon(
-                        imageVector = image,
-                        contentDescription = null,
-                        modifier = Modifier.size(15.dp)
-                    )
+                    Icon(imageVector = icon, contentDescription = null)
                 }
             },
             visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            )
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Campo de confirmar contraseña
+        TextField(
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            label = { Text("Confirmar Contraseña") },
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = null,
+                    modifier = Modifier.size(15.dp)
+                )
+            },
+            trailingIcon = {
+                val icon = if (confirmPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff
+                IconButton(onClick = { confirmPasswordVisible = !confirmPasswordVisible }) {
+                    Icon(imageVector = icon, contentDescription = null)
+                }
+            },
+            visualTransformation = if (confirmPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(8.dp),
             colors = TextFieldDefaults.textFieldColors(
